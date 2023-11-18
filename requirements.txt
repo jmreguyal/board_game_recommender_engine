@@ -1,0 +1,7 @@
+streamlit
+pandas
+getpass
+ast
+openai
+numpy
+scipy
