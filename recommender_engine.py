@@ -103,26 +103,27 @@ def main():
     target_user = st.selectbox( "Select a Target User:", ['Board Game Player', 'Board Game Designer', 'Board Game Publisher'], 0)
     game_description_input = st.text_input('Describe a board game that you would want to get recommendations from:')
 
-    results_1 = get_result_1(game_description_input)
+    if game_description_input == '':
+        results_1 = get_result_1(game_description_input)
 
-    game_title = st.radio("Select a game:", results_1['Game Name'])
-    game_description = results_1[results_1['Game Name'] == game_title]['Description'].values[0]
-    game_year_published = results_1[results_1['Game Name'] == game_title]['Year Published'].values[0]
-    game_users_rated = results_1[results_1['Game Name'] == game_title]['Users Rated'].values[0]
-    game_average_score = results_1[results_1['Game Name'] == game_title]['Average Score'].values[0]
+        game_title = st.radio("Select a game:", results_1['Game Name'])
+        game_description = results_1[results_1['Game Name'] == game_title]['Description'].values[0]
+        game_year_published = results_1[results_1['Game Name'] == game_title]['Year Published'].values[0]
+        game_users_rated = results_1[results_1['Game Name'] == game_title]['Users Rated'].values[0]
+        game_average_score = results_1[results_1['Game Name'] == game_title]['Average Score'].values[0]
 
-    c1, c2 =  st.columns(2)
-    with c1:
-        st.title('Board Game Info')
-        st.subheader(game_title)
-        st.write(game_description)
-        st.write(f"Year Published: {game_year_published}")
-        st.write(f"Users Rated: {game_users_rated}")
-        st.write(f"Average Score: {game_average_score}")
-    with c2:
-        st.title('Board Game Reviews')
-        st.subheader("Top User Reviews and Sentiment Analysis")
-        get_result_2(target_user, game_title, game_description)
+        c1, c2 =  st.columns(2)
+        with c1:
+            st.title('Board Game Info')
+            st.subheader(game_title)
+            st.write(game_description)
+            st.write(f"Year Published: {game_year_published}")
+            st.write(f"Users Rated: {game_users_rated}")
+            st.write(f"Average Score: {game_average_score}")
+        with c2:
+            st.title('Board Game Reviews')
+            st.subheader("Top User Reviews and Sentiment Analysis")
+            get_result_2(target_user, game_title, game_description)
 
 if __name__ == "__main__":
     main()
