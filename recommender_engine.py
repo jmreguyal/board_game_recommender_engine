@@ -103,7 +103,7 @@ def main():
     target_user = st.selectbox( "Select a Target User:", ['Board Game Player', 'Board Game Designer', 'Board Game Publisher'], 0)
     game_description_input = st.text_input('Describe a board game that you would want to get recommendations from:')
 
-    if game_description_input == '':
+    if game_description_input != '':
         results_1 = get_result_1(game_description_input)
 
         game_title = st.radio("Select a game:", results_1['Game Name'])
