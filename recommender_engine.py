@@ -43,22 +43,27 @@ def get_similarity_score(df, comment, n=3, pprint=True):
    return res_df
 
 # Recommendation Function
-def get_recommendation(target_user, comments):
-    reco_prompt = f"""Synthesize the main takeaways from the following and provide recommendations for our {target_user}:"""
-    response = openai.ChatCompletion.create(
+def get_gpt_recommendation(target_user, comments, game_description):
+    reco_prompt = f"""Synthesize the main takeaways from the following and provide recommendations for our {target_user} with this game describe as: 
+    '{game_description}' 
+    with the following user reviews: {comments} 
+"""
+    # st.write(reco_prompt)
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
             {
                 "role": "system",
-                "content": "You are a helpful assistant and expert in boardgames."
+                "content": "You are a helpful assistant and expert in board games."
             },
             {
                 "role": "user",
-                "content": reco_prompt + comments
+                "content": reco_prompt
             }
         ]
     )
-    return response.choices[0].message['content'].strip()
+    # st.write(response.choices[0].message['content'].strip())
+    return response.choices[0].message.content.strip()
 
 
 # Renaming columns
@@ -76,12 +81,16 @@ def get_result_1(game_description_input):
     except Exception as e  :
         print(str(e))
 
-def get_result_2(target_user, game_title):
+def get_result_2(target_user, game_title, game_description):
     try:
         results_2 = pd.read_csv("sentiment_analysis_textblob_vader.csv")
         results_2 = results_2[results_2['name'] == game_title].head()
         st.dataframe(results_2)
-        # results_2 = get_recommendation(target_user, game_reviews)
+        game_reviews = results_2['comment'].str.cat(sep=' ')
+        # game_reviews
+        st.subheader(f"GPT3 LLM Recommendation for the {target_user}")
+        results_2_recotext = get_gpt_recommendation(target_user, game_reviews, game_description)
+        st.write(results_2_recotext)
 
     except Exception as e  :
         print(str(e))
@@ -113,7 +122,7 @@ def main():
     with c2:
         st.title('Board Game Reviews')
         st.subheader("Top User Reviews and Sentiment Analysis")
-        get_result_2(target_user, game_title)
+        get_result_2(target_user, game_title, game_description)
 
 if __name__ == "__main__":
     main()
