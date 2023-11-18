@@ -122,7 +122,7 @@ def main():
             st.write(f"Average Score: {game_average_score}")
         with c2:
             st.title('Board Game Reviews')
-            st.subheader("Top User Reviews and Sentiment Analysis")
+            st.subheader("Top User Reviews (with Sentiment Analysis and Topic Modeling)")
             get_result_2(target_user, game_title, game_description)
 
 if __name__ == "__main__":
