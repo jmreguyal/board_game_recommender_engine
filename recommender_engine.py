@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import getpass
 import ast
 from openai import OpenAI
 import numpy as np
